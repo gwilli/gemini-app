@@ -27,7 +27,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.gregwilliams.geminiapp.R
 import dev.gregwilliams.geminiapp.textexample.TextOnlyViewModel
 import dev.gregwilliams.geminiapp.ui.theme.GeminiApplicationTheme
@@ -49,21 +48,15 @@ fun TextOnlyScreen(
         }
     ) { paddingValues ->
 
-        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
-        //var text by remember { mutableStateOf("") }
-
         TextOnlyQueryView(
             modifier = Modifier
                 .padding(paddingValues)
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
-            isLoading = uiState.isLoading,
-            //inputText = text,
-            inputText = uiState.inputMessage,
-            response = uiState.response,
-            //onInputChange = { text = it },
-            onInputChange = { uiState.inputMessage = it },
+            isLoading = viewModel.isLoading,
+            inputText = viewModel.inputMessage,
+            response = viewModel.response,
+            onInputChange = { viewModel.inputMessage = it },
             sendQueryOnClick = { viewModel.sendQuery() }
         )
     }
