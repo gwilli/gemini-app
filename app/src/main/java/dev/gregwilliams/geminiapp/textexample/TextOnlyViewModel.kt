@@ -1,52 +1,53 @@
 package dev.gregwilliams.geminiapp.textexample
 
+import android.os.Parcelable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dev.gregwilliams.geminiapp.util.WhileUiSubscribed
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.parcelize.Parcelize
 
 class TextOnlyViewModel(
     private val savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
-    val uiState = savedStateHandle.getStateFlow(TEXT_ONLY_SAVED_STATE_KEY, TextOnlyUiState())
+    private val _uiState = MutableStateFlow(
+        savedStateHandle.getStateFlow(TEXT_ONLY_SAVED_STATE_KEY, TextOnlyUiState()).value
+    )
+    val uiState: StateFlow<TextOnlyUiState> = _uiState.asStateFlow()
+
+    override fun onCleared() {
+        super.onCleared()
+        savedStateHandle[TEXT_ONLY_SAVED_STATE_KEY] = _uiState.asStateFlow()
+    }
 
     private suspend fun queryAI(query: String): String {
         // TODO call AI with query
         delay(2000L)
-        return "I'm sorry, I don't know."
+        return "I'm sorry, I don't know anything about \"$query\"."
     }
 
     fun updateQuery(input: String) {
-        uiState.value.inputMessage = input
+        _uiState.update { it.copy(inputMessage = input) }
     }
 
     fun sendQuery() = viewModelScope.launch {
-        savedStateHandle[TEXT_ONLY_SAVED_STATE_KEY] = flow<String> { queryAI(uiState.value.inputMessage) }
-            .catch {
-                emit(it.message ?: "An unknown error occurred")
-            }
-            .map {
-                TextOnlyUiState(response = it)
-            }
-            .stateIn(
-                scope = viewModelScope,
-                started = WhileUiSubscribed,
-                initialValue = TextOnlyUiState(isLoading = true)
-            )
+        _uiState.update { it.copy(isLoading = true) }
+        val response = queryAI(uiState.value.inputMessage)
+        _uiState.update { it.copy(response = response, isLoading = false) }
     }
 }
 
 const val TEXT_ONLY_SAVED_STATE_KEY = "text_only_state_key"
 
+@Parcelize
 data class TextOnlyUiState(
     var inputMessage: String = "",
     val response: String = "",
     val isLoading: Boolean = false
-)
+) : Parcelable
