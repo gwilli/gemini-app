@@ -5,7 +5,9 @@ import android.os.Parcelable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
+import com.google.ai.client.generativeai.GenerativeModel
+import com.google.ai.client.generativeai.type.content
+import dev.gregwilliams.geminiapp.BuildConfig
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,9 +30,21 @@ class TextImageViewModel(
     }
 
     private suspend fun queryAI(query: String, bitmaps: List<Bitmap>): String {
-        // TODO call AI with query
-        delay(2000L)
-        return "I'm sorry, I don't know anything about \"$query\"."
+        val generativeModel = GenerativeModel(
+            // For text-and-images input (multimodal), use the gemini-pro-vision model
+            modelName = "gemini-2.5-pro-vision",
+            // Access your API key as a Build Configuration variable (see "Set up your API key" above)
+            apiKey = BuildConfig.apiKey
+        )
+        val inputContent = content {
+            for (bitmap in bitmaps) {
+                image(bitmap)
+            }
+            text(query)
+        }
+
+        return generativeModel.generateContent(inputContent).text ?:
+            "I'm sorry, I don't know anything about \"$query\"."
     }
 
     fun updateQuery(input: String) {
