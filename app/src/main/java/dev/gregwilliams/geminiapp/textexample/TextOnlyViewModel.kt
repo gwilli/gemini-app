@@ -4,7 +4,8 @@ import android.os.Parcelable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
+import com.google.ai.client.generativeai.GenerativeModel
+import dev.gregwilliams.geminiapp.BuildConfig
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,9 +28,12 @@ class TextOnlyViewModel(
     }
 
     private suspend fun queryAI(query: String): String {
-        // TODO call AI with query
-        delay(2000L)
-        return "I'm sorry, I don't know anything about \"$query\"."
+        val generativeModel = GenerativeModel(
+            modelName = "gemini-2.5-pro",
+            apiKey = BuildConfig.apiKey
+        )
+        return generativeModel.generateContent(query).text
+            ?: "I'm sorry, I don't know anything about \"$query\"."
     }
 
     fun updateQuery(input: String) {

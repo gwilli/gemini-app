@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("kotlin-parcelize")
     alias(libs.plugins.kotlinCompose)
+    alias(libs.plugins.secretsGradle)
 }
 
 android {
@@ -42,6 +43,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     packaging {
         resources {
@@ -64,6 +66,7 @@ dependencies {
     implementation(libs.androidx.compose.material.core)
     implementation(libs.androidx.material3)
     implementation(libs.coil.compose)
+    implementation(libs.generativeai)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
