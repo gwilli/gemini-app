@@ -3,6 +3,10 @@
 
     <string name="textonly_title">Text Only Example</string>
     <string name="textonly_button_text">Send query to AI</string>
+
+    <string name="text_and_image_title">Text &amp; Image Example</string>
+
     <string name="copy_text">Copy to clipboard</string>
     <string name="text_copied_text">Copied to clipboard</string>
+    <string name="open_drawer">Open drawer</string>
 </resources>

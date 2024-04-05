@@ -13,12 +13,10 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -33,16 +31,17 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import dev.gregwilliams.geminiapp.MainTopAppBar
 import dev.gregwilliams.geminiapp.R
 import dev.gregwilliams.geminiapp.textexample.TextOnlyViewModel
 import dev.gregwilliams.geminiapp.ui.theme.GeminiApplicationTheme
 import dev.gregwilliams.geminiapp.util.BooleanPreviewParamProvider
 import dev.gregwilliams.geminiapp.util.longPressToCopyToClipboard
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TextOnlyScreen(
     modifier: Modifier = Modifier,
+    openDrawer: () -> Unit,
     viewModel: TextOnlyViewModel
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -50,9 +49,9 @@ fun TextOnlyScreen(
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
-            TopAppBar(
-                modifier = Modifier.fillMaxWidth(),
-                title = { Text(text = stringResource(R.string.textonly_title)) }
+            MainTopAppBar(
+                openDrawer = openDrawer,
+                titleResId = R.string.textonly_title
             )
         }
     ) { paddingValues ->
