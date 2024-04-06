@@ -51,6 +51,8 @@ class TextOnlyViewModel(
             }
         }
     }
+
+    fun clear() = _uiState.update { TextOnlyUiState() }
 }
 
 const val TEXT_ONLY_SAVED_STATE_KEY = "text_only_state_key"

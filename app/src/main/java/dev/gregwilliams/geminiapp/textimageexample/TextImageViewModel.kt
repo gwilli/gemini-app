@@ -52,6 +52,8 @@ class TextImageViewModel(
             }
         }
     }
+
+    fun clear() = _uiState.update { TextImageUiState() }
 }
 
 const val TEXT_IMAGE_SAVED_STATE_KEY = "text_image_state_key"

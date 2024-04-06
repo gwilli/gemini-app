@@ -78,7 +78,8 @@ fun TextImageScreen(
         topBar = {
             MainTopAppBar(
                 openDrawer = openDrawer,
-                titleResId = R.string.text_and_image_title
+                titleResId = R.string.text_and_image_title,
+                clear = viewModel::clear
             )
         }
     ) { paddingValues ->

@@ -3,6 +3,7 @@ package dev.gregwilliams.geminiapp
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -17,6 +18,7 @@ import androidx.compose.ui.res.stringResource
 @Composable
 fun MainTopAppBar(
     openDrawer: () -> Unit,
+    clear: () -> Unit,
     @StringRes titleResId: Int
 ) {
     TopAppBar(
@@ -26,6 +28,14 @@ fun MainTopAppBar(
                 Icon(
                     imageVector = Icons.Filled.Menu,
                     contentDescription = stringResource(id = R.string.open_drawer)
+                )
+            }
+        },
+        actions = {
+            IconButton(onClick = clear) {
+                Icon(
+                    imageVector = Icons.Filled.Delete,
+                    contentDescription = stringResource(id = R.string.clear_form)
                 )
             }
         },

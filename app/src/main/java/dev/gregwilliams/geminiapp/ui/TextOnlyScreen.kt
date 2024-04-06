@@ -52,7 +52,8 @@ fun TextOnlyScreen(
         topBar = {
             MainTopAppBar(
                 openDrawer = openDrawer,
-                titleResId = R.string.textonly_title
+                titleResId = R.string.textonly_title,
+                clear = viewModel::clear
             )
         }
     ) { paddingValues ->

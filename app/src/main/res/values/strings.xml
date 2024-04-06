@@ -10,4 +10,5 @@
     <string name="copy_text">Copy to clipboard</string>
     <string name="text_copied_text">Copied to clipboard</string>
     <string name="open_drawer">Open drawer</string>
+    <string name="clear_form">Clear form</string>
 </resources>
