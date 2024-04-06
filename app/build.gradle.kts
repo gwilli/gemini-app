@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.compose.material.core)
     implementation(libs.androidx.material3)
+    implementation(libs.coil.compose)
     compileOnly(libs.kotlin.gradle.plugin)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -103,10 +103,9 @@ private fun DrawerHeader(
         Image(
             painter = painterResource(id = R.drawable.gemini_logo),
             contentDescription = null,
-            modifier = Modifier
-                .width(dimensionResource(id = R.dimen.header_image_width))
-                .padding(bottom = 8.dp)
+            modifier = Modifier.width(dimensionResource(id = R.dimen.header_image_width))
         )
+        Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = stringResource(id = R.string.app_name),
             color = MaterialTheme.colorScheme.background

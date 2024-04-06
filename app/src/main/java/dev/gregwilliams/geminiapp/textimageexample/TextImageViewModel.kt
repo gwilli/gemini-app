@@ -1,5 +1,6 @@
-package dev.gregwilliams.geminiapp.textexample
+package dev.gregwilliams.geminiapp.textimageexample
 
+import android.graphics.Bitmap
 import android.os.Parcelable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -12,21 +13,21 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 
-class TextOnlyViewModel(
+class TextImageViewModel(
     private val savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
     private val _uiState = MutableStateFlow(
-        savedStateHandle.getStateFlow(TEXT_ONLY_SAVED_STATE_KEY, TextOnlyUiState()).value
+        savedStateHandle.getStateFlow(TEXT_IMAGE_SAVED_STATE_KEY, TextImageUiState()).value
     )
-    val uiState: StateFlow<TextOnlyUiState> = _uiState.asStateFlow()
+    val uiState: StateFlow<TextImageUiState> = _uiState.asStateFlow()
 
     override fun onCleared() {
         super.onCleared()
-        savedStateHandle[TEXT_ONLY_SAVED_STATE_KEY] = _uiState.asStateFlow()
+        savedStateHandle[TEXT_IMAGE_SAVED_STATE_KEY] = _uiState.asStateFlow()
     }
 
-    private suspend fun queryAI(query: String): String {
+    private suspend fun queryAI(query: String, bitmaps: List<Bitmap>): String {
         // TODO call AI with query
         delay(2000L)
         return "I'm sorry, I don't know anything about \"$query\"."
@@ -36,10 +37,10 @@ class TextOnlyViewModel(
         _uiState.update { it.copy(inputMessage = input) }
     }
 
-    fun sendQuery() = viewModelScope.launch {
+    fun sendQuery(inputText: String, bitmaps: List<Bitmap>) = viewModelScope.launch {
         _uiState.update { it.copy(isLoading = true) }
         try {
-            val response = queryAI(uiState.value.inputMessage)
+            val response = queryAI(query = inputText, bitmaps = bitmaps)
             _uiState.update { it.copy(response = response, isLoading = false, isError = false) }
         } catch (t: Throwable) {
             _uiState.update {
@@ -53,10 +54,10 @@ class TextOnlyViewModel(
     }
 }
 
-const val TEXT_ONLY_SAVED_STATE_KEY = "text_only_state_key"
+const val TEXT_IMAGE_SAVED_STATE_KEY = "text_image_state_key"
 
 @Parcelize
-data class TextOnlyUiState(
+data class TextImageUiState(
     var inputMessage: String = "",
     val response: String = "",
     val isLoading: Boolean = false,

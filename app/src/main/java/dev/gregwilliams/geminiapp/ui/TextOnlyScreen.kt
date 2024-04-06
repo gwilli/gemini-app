@@ -25,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -64,6 +65,7 @@ fun TextOnlyScreen(
             isLoading = uiState.isLoading,
             inputText = uiState.inputMessage,
             response = uiState.response,
+            isError = uiState.isError,
             onInputChange =  { viewModel.updateQuery(it) },
             sendQueryOnClick = { viewModel.sendQuery() }
         )
@@ -76,6 +78,7 @@ private fun TextOnlyQueryView(
     isLoading: Boolean = false,
     inputText: String = "",
     response: String = "",
+    isError: Boolean = false,
     onInputChange: (String) -> Unit,
     sendQueryOnClick: () -> Unit
 ) {
@@ -102,7 +105,7 @@ private fun TextOnlyQueryView(
                     color = MaterialTheme.colorScheme.onPrimary
                 )
             } else {
-                Text(text = stringResource(id = R.string.textonly_button_text))
+                Text(text = stringResource(id = R.string.send_to_ai_button_text))
             }
         }
 
@@ -112,7 +115,7 @@ private fun TextOnlyQueryView(
                 .fillMaxWidth()
                 .padding(top = 16.dp)
                 .longPressToCopyToClipboard(context, response),
-            color = MaterialTheme.colorScheme.onBackground,
+            color = if (isError) Color.Red else MaterialTheme.colorScheme.onBackground,
             text = response
         )
     }

@@ -14,7 +14,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dev.gregwilliams.geminiapp.textexample.TextOnlyViewModel
-import dev.gregwilliams.geminiapp.ui.TextAndImageScreen
+import dev.gregwilliams.geminiapp.textimageexample.TextImageViewModel
+import dev.gregwilliams.geminiapp.ui.TextImageScreen
 import dev.gregwilliams.geminiapp.ui.TextOnlyScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -23,6 +24,7 @@ import kotlinx.coroutines.launch
 fun MainNavGraph(
     modifier: Modifier = Modifier,
     textOnlyViewModel: TextOnlyViewModel,
+    textImageViewModel: TextImageViewModel,
     navController: NavHostController = rememberNavController(),
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
@@ -57,8 +59,9 @@ fun MainNavGraph(
                 currentRoute = currentRoute,
                 navigationActions = navActions
             ) {
-                TextAndImageScreen (
+                TextImageScreen (
                     openDrawer = { coroutineScope.launch { drawerState.open() } },
+                    viewModel = textImageViewModel
                 )
             }
         }
