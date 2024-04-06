@@ -72,6 +72,7 @@ fun TextImageScreen(
     val coroutineScope = rememberCoroutineScope()
     val imageRequestBuilder = ImageRequest.Builder(LocalContext.current)
     val imageLoader = ImageLoader.Builder(LocalContext.current).build()
+    val imageUris = rememberSaveable(saver = UriSaver()) { mutableStateListOf() }
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -79,7 +80,10 @@ fun TextImageScreen(
             MainTopAppBar(
                 openDrawer = openDrawer,
                 titleResId = R.string.text_and_image_title,
-                clear = viewModel::clear
+                clear = {
+                    viewModel.clear()
+                    imageUris.clear()
+                }
             )
         }
     ) { paddingValues ->
@@ -93,6 +97,7 @@ fun TextImageScreen(
             inputText = uiState.inputMessage,
             response = uiState.response,
             isError = uiState.isError,
+            imageUris = imageUris,
             onInputChange = {  viewModel.updateQuery(it) },
             sendQueryOnClick = { inputText, selectedItems ->
                 coroutineScope.launch {
@@ -128,11 +133,10 @@ private fun TextImageQueryView(
     inputText: String = "",
     response: String = "",
     isError: Boolean = false,
+    imageUris: MutableList<Uri> = mutableListOf(),
     onInputChange: (String) -> Unit,
     sendQueryOnClick: (String, List<Uri>) -> Unit
 ) {
-    val imageUris = rememberSaveable(saver = UriSaver()) { mutableStateListOf() }
-
     val pickMedia = rememberLauncherForActivityResult(
         ActivityResultContracts.PickVisualMedia()
     ) { imageUri ->
