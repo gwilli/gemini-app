@@ -48,6 +48,7 @@ fun AppModalDrawer(
                 currentRoute = currentRoute,
                 navigateToTextOnly = { navigationActions.navigateToTextOnly() },
                 navigateToTextAndImage = { navigationActions.navigateToTextAndImage() },
+                navigateToChat = { navigationActions.navigateToChat() },
                 closeDrawer = { coroutineScope.launch { drawerState.close() } }
             )
         }
@@ -61,6 +62,7 @@ private fun AppDrawer(
     currentRoute: String,
     navigateToTextOnly: () -> Unit,
     navigateToTextAndImage: () -> Unit,
+    navigateToChat: () -> Unit,
     closeDrawer: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -81,6 +83,15 @@ private fun AppDrawer(
             isSelected = currentRoute == MainDestinations.TEXT_AND_IMAGE_ROUTE,
             action = {
                 navigateToTextAndImage()
+                closeDrawer()
+            }
+        )
+        DrawerButton(
+            painter = painterResource(id = R.drawable.ic_chat),
+            label = stringResource(id = R.string.chat_title),
+            isSelected = currentRoute == MainDestinations.CHAT_ROUTE,
+            action = {
+                navigateToChat()
                 closeDrawer()
             }
         )
@@ -163,6 +174,7 @@ fun PreviewAppDrawer() {
                 currentRoute = MainDestinations.TEXT_ONLY_ROUTE,
                 navigateToTextOnly = {},
                 navigateToTextAndImage = {},
+                navigateToChat = {},
                 closeDrawer = {}
             )
         }

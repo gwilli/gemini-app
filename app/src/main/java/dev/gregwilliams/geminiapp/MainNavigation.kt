@@ -2,6 +2,7 @@ package dev.gregwilliams.geminiapp
 
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import dev.gregwilliams.geminiapp.Screens.CHAT_SCREEN
 import dev.gregwilliams.geminiapp.Screens.TEXT_AND_IMAGE_SCREEN
 import dev.gregwilliams.geminiapp.Screens.TEXT_ONLY_SCREEN
 
@@ -11,6 +12,7 @@ import dev.gregwilliams.geminiapp.Screens.TEXT_ONLY_SCREEN
 private object Screens {
     const val TEXT_ONLY_SCREEN = "textOnly"
     const val TEXT_AND_IMAGE_SCREEN = "textAndImage"
+    const val CHAT_SCREEN = "chatScreen"
 }
 
 /**
@@ -26,6 +28,7 @@ object MainDestinationArgs {
 object MainDestinations {
     const val TEXT_ONLY_ROUTE = TEXT_ONLY_SCREEN
     const val TEXT_AND_IMAGE_ROUTE = TEXT_AND_IMAGE_SCREEN
+    const val CHAT_ROUTE = CHAT_SCREEN
 }
 
 /**
@@ -50,6 +53,16 @@ class MainNavigationActions(private val navController: NavHostController) {
 
     fun navigateToTextAndImage() {
         navController.navigate(MainDestinations.TEXT_AND_IMAGE_ROUTE) {
+            popUpTo(navController.graph.findStartDestination().id) {
+                saveState = true
+            }
+            launchSingleTop = true
+            restoreState = true
+        }
+    }
+
+    fun navigateToChat() {
+        navController.navigate(MainDestinations.CHAT_ROUTE) {
             popUpTo(navController.graph.findStartDestination().id) {
                 saveState = true
             }

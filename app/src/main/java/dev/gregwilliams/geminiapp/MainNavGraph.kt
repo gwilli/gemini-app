@@ -13,8 +13,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import dev.gregwilliams.geminiapp.chatexample.ChatViewModel
 import dev.gregwilliams.geminiapp.textexample.TextOnlyViewModel
 import dev.gregwilliams.geminiapp.textimageexample.TextImageViewModel
+import dev.gregwilliams.geminiapp.ui.ChatScreen
 import dev.gregwilliams.geminiapp.ui.TextImageScreen
 import dev.gregwilliams.geminiapp.ui.TextOnlyScreen
 import kotlinx.coroutines.CoroutineScope
@@ -25,6 +27,7 @@ fun MainNavGraph(
     modifier: Modifier = Modifier,
     textOnlyViewModel: TextOnlyViewModel,
     textImageViewModel: TextImageViewModel,
+    chatViewModel: ChatViewModel,
     navController: NavHostController = rememberNavController(),
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
@@ -62,6 +65,18 @@ fun MainNavGraph(
                 TextImageScreen (
                     openDrawer = { coroutineScope.launch { drawerState.open() } },
                     viewModel = textImageViewModel
+                )
+            }
+        }
+        composable(MainDestinations.CHAT_ROUTE) {
+            AppModalDrawer(
+                drawerState = drawerState,
+                currentRoute = currentRoute,
+                navigationActions = navActions
+            ) {
+                ChatScreen (
+                    openDrawer = { coroutineScope.launch { drawerState.open() } },
+                    viewModel = chatViewModel
                 )
             }
         }

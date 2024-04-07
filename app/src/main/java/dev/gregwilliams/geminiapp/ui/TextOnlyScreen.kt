@@ -63,8 +63,8 @@ fun TextOnlyScreen(
             inputText = uiState.inputMessage,
             response = uiState.response,
             isError = uiState.isError,
-            onInputChange =  { viewModel.updateQuery(it) },
-            sendQueryOnClick = { viewModel.sendQuery() }
+            onInputChange = viewModel::updateQuery,
+            sendQueryOnClick = viewModel::sendQuery
         )
     }
 }

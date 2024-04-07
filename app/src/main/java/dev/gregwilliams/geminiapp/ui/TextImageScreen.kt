@@ -99,9 +99,9 @@ fun TextImageScreen(
             onInputChange = {  viewModel.updateQuery(it) },
             sendQueryOnClick = { inputText, selectedItems ->
                 coroutineScope.launch {
-                    val bitmaps = selectedItems.mapNotNull {
+                    val bitmaps = selectedItems.mapNotNull { uri ->
                         val imageRequest = imageRequestBuilder
-                            .data(it)
+                            .data(uri)
                             // Scale the image down to 768px for faster uploads
                             .size(size = 768)
                             .precision(Precision.EXACT)
